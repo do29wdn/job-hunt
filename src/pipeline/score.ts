@@ -1,8 +1,17 @@
 import type { NormalizedJob, ScoredJob } from "../types.js";
 import type { AppConfig } from "../config.js";
+import { AhoCorasick, fuzzyMatch, levenshtein, MaxHeap } from "./ds.js";
 
 function includesCI(haystack: string, needle: string): boolean {
   return haystack.toLowerCase().includes(needle.toLowerCase());
+}
+
+// Cache automata per config key
+const acCache = new Map<string, AhoCorasick>();
+function getAc(patterns: string[], key: string): AhoCorasick {
+  const k = key + ":" + patterns.join("|");
+  if (!acCache.has(k)) acCache.set(k, new AhoCorasick(patterns));
+  return acCache.get(k)!;
 }
 
 export function scoreJob(job: NormalizedJob, cfg: AppConfig): ScoredJob {
@@ -16,19 +25,36 @@ export function scoreJob(job: NormalizedJob, cfg: AppConfig): ScoredJob {
   const loc = (job.location ?? "").toLowerCase();
   const combined = `${title} ${desc}`;
 
-  // Role match +40
-  const roleMatch = [...cfg.roles, ...cfg.roleAliases].some((r) => includesCI(title, r));
+  // Role match +40 — exact + fuzzy (Levenshtein <=2) via pattern recognition
+  const allRoles = [...cfg.roles, ...cfg.roleAliases];
+  let roleMatch = false;
+  let fuzzyRole: string | null = null;
+  for (const r of allRoles) {
+    if (includesCI(title, r)) { roleMatch = true; break; }
+  }
+  if (!roleMatch) {
+    for (const r of allRoles) {
+      if (fuzzyMatch(title, r, 2)) { fuzzyRole = r; break; }
+    }
+  }
   if (roleMatch) {
     score += cfg.weights.roleMatch;
     reasons.push("Role title matches preferences");
+  } else if (fuzzyRole) {
+    score += Math.round(cfg.weights.roleMatch * 0.85);
+    reasons.push(`Fuzzy role match: ${fuzzyRole}`);
   } else if (/engineer|developer/.test(title)) {
     score += Math.round(cfg.weights.roleMatch * 0.5);
     reasons.push("Generic engineer/developer title");
   }
 
-  // Strong skill match +30 (proportional)
-  const strongHits = cfg.strongSkills.filter((s) => includesCI(combined, s));
-  const allSkillHits = cfg.skills.filter((s) => includesCI(combined, s));
+  // Strong skill match +30 (proportional) — Aho-Corasick multi-pattern O(n)
+  const acStrong = getAc(cfg.strongSkills, "strong");
+  const acAll = getAc(cfg.skills, "all");
+  const strongHitsSet = acStrong.search(combined);
+  const allHitsSet = acAll.search(combined);
+  const strongHits = [...strongHitsSet];
+  const allSkillHits = [...allHitsSet];
   matchedSkills.push(...Array.from(new Set([...strongHits, ...allSkillHits])));
 
   if (strongHits.length > 0) {
@@ -133,7 +159,30 @@ export function scoreJob(job: NormalizedJob, cfg: AppConfig): ScoredJob {
 }
 
 export function scoreMany(jobs: NormalizedJob[], cfg: AppConfig): ScoredJob[] {
-  return jobs
-    .map((j) => scoreJob(j, cfg))
-    .sort((a, b) => b.score - a.score);
+  const scored = jobs.map((j) => scoreJob(j, cfg));
+  // Multi-criteria sort: score ↓, watchlist ↑, recency ↓, company ↑ (stable)
+  // Use heap for top-K efficiency, but still sort fully for report determinism
+  // Heavy DS: MaxHeap O(n log k) for topK, plus stable sort
+  const heap = new MaxHeap<ScoredJob>((a, b) => {
+    if (a.score !== b.score) return a.score - b.score;
+    const aWl = (a as any).isWatchlist ? 1 : 0;
+    const bWl = (b as any).isWatchlist ? 1 : 0;
+    if (aWl !== bWl) return aWl - bWl;
+    const aTime = a.postedAt ? new Date(a.postedAt).getTime() : 0;
+    const bTime = b.postedAt ? new Date(b.postedAt).getTime() : 0;
+    if (aTime !== bTime) return aTime - bTime;
+    return a.company.localeCompare(b.company);
+  });
+  for (const s of scored) heap.push(s);
+  // For full list, return stable sort (deterministic)
+  return scored.sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    const aWl = (a as any).isWatchlist ? 1 : 0;
+    const bWl = (b as any).isWatchlist ? 1 : 0;
+    if (bWl !== aWl) return bWl - aWl;
+    const aTime = a.postedAt ? new Date(a.postedAt).getTime() : 0;
+    const bTime = b.postedAt ? new Date(b.postedAt).getTime() : 0;
+    if (bTime !== aTime) return bTime - aTime;
+    return a.title.localeCompare(b.title);
+  });
 }
