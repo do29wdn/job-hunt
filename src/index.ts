@@ -7,7 +7,7 @@ import { scoreMany } from "./pipeline/score.js";
 import { loadSeenJobs, saveSeenJobs, partitionNewJobs } from "./storage/seen-jobs.js";
 import { sendTelegram, sendTelegramFull, sendInstantAlert } from "./notifications/telegram.js";
 import { sendEmail } from "./notifications/email.js";
-import { enrichWithAI } from "./pipeline/ai.js";
+import { enrichWithAI, enrichWithAIHeavy } from "./pipeline/ai.js";
 import type { ScoredJob } from "./types.js";
 import { readFile } from "node:fs/promises";
 
@@ -43,10 +43,18 @@ async function hunt(cfg: Awaited<ReturnType<typeof loadConfig>>) {
   console.log(`New: ${newJobs.length}, Already seen: ${alreadySeen.length}`);
 
   let scored = scoreMany(newJobs, cfg);
-  // Optional AI enrichment for top 15 if key set
+  // Key-gated heavy AI: if key provided, deep enrich all relevant (60% deterministic + 40% AI), else deterministic only
   if (process.env.OPENAI_API_KEY) {
-    console.log("[ai] Enriching top jobs...");
-    scored = await enrichWithAI(scored, 15);
+    const heavy = (process.env.AI_HEAVY ?? "true") !== "false";
+    if (heavy) {
+      console.log("[ai-heavy] Key present → deep enrich all jobs...");
+      scored = await enrichWithAIHeavy(scored, (cfg as any).maxFullReportJobs ?? 150);
+    } else {
+      console.log("[ai] Enriching top jobs...");
+      scored = await enrichWithAI(scored, 15);
+    }
+  } else {
+    console.log("[ai] No key → deterministic only");
   }
   const relevant = scored.filter((j) => j.score >= cfg.minScoreToReport);
   console.log(`Scored: ${scored.length} new, ${relevant.length} >= ${cfg.minScoreToReport} threshold`);
@@ -96,10 +104,11 @@ async function report(cfg: Awaited<ReturnType<typeof loadConfig>>) {
     console.log("No seen jobs found for report");
   }
 
-  // Re-score in case config changed, then rank
+  // Re-score in case config changed, then rank — heavy if key present
   let rescored = scoreMany(candidates as any, cfg);
   if (process.env.OPENAI_API_KEY) {
-    rescored = await enrichWithAI(rescored, 15);
+    const heavy = (process.env.AI_HEAVY ?? "true") !== "false";
+    rescored = heavy ? await enrichWithAIHeavy(rescored, (cfg as any).maxFullReportJobs ?? 150) : await enrichWithAI(rescored, 15);
   }
   let relevant = rescored.filter((j) => j.score >= cfg.minScoreToReport).sort((a, b) => b.score - a.score);
   const maxFull = (cfg as any).maxFullReportJobs ?? 150;
