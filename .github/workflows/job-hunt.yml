@@ -1,0 +1,104 @@
+name: Job Hunt Radar
+
+on:
+  schedule:
+    # Daily hunt at 09:00 IST = 03:30 UTC
+    - cron: "30 3 * * *"
+    # Every 3 days full report at 09:15 IST = 03:45 UTC (1st,4th,7th...)
+    - cron: "45 3 1,4,7,10,13,16,19,22,25,28,31 * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Mode to run"
+        required: true
+        default: "full"
+        type: choice
+        options: [full, hunt, report]
+      dry_run:
+        description: "Dry run (no notifications)"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  hunt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install deps
+        run: pnpm install --frozen-lockfile
+        # fallback if no lockfile yet
+        # run: pnpm install
+
+      - name: Determine mode
+        id: mode
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            HOUR_MIN=$(date -u +%H:%M)
+            # 03:30 = hunt only, 03:45 = full report
+            if [ "$HOUR_MIN" = "03:30" ] || [ "$HOUR_MIN" = "03:31" ]; then
+              echo "mode=hunt" >> $GITHUB_OUTPUT
+            else
+              echo "mode=full" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "mode=${{ inputs.mode }}" >> $GITHUB_OUTPUT
+          fi
+          echo "Resolved mode: $(cat $GITHUB_OUTPUT)"
+
+      - name: Run job hunter
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_FROM: ${{ secrets.RESEND_FROM }}
+          RESEND_TO: ${{ secrets.RESEND_TO }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          MODE: ${{ steps.mode.outputs.mode }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          echo "Running in mode: $MODE"
+          pnpm run start -- --mode=$MODE
+
+      - name: Commit updated seen-jobs
+        if: always()
+        run: |
+          if [ -f data/seen-jobs.json ]; then
+            git config user.name "job-hunter-bot"
+            git config user.email "job-hunter@users.noreply.github.com"
+            git add data/seen-jobs.json
+            if git diff --cached --quiet; then
+              echo "No changes to commit"
+            else
+              git commit -m "chore: update seen-jobs [skip ci]"
+              git push
+            fi
+          else
+            echo "No seen-jobs.json found"
+          fi
+
+      # Simpler alternative: if you prefer every 3 days only (no daily hunt), disable first cron above
+      # and keep only one cron like: "45 3 */3 * *"
