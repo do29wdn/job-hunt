@@ -75,6 +75,9 @@ const configSchema = z.object({
     "head of engineering",
     "cto",
     "architect",
+    "intern",
+    "trainee",
+    "new grad",
   ]),
   // if description explicitly says 8+ years, flag but don't auto-drop unless blocklist hit
   // we use this only for down-scoring, not hard filter
