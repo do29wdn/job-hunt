@@ -28,7 +28,9 @@ Current score: ${job.score}, matchedSkills: ${job.matchedSkills.join(", ")}, rea
 Return JSON: {"explanation": "1-2 sentences why relevant or not", "gaps": "missing skills comma-separated or empty", "adjustedScore": 0-100 integer}
 Only JSON, no markdown.`;
 
-        const res = await fetch("https://api.openai.com/v1/chat/completions", {
+        const base = process.env.OPENAI_BASE_URL ?? "https://api.openai.com/v1";
+        const url = `${base.replace(/\/$/, "")}/chat/completions`;
+        const res = await fetch(url, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
