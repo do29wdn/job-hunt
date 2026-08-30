@@ -131,7 +131,13 @@
     "web engineer",
     "javascript engineer",
     "application developer",
-    "sde"
+    "sde",
+    "associate engineer",
+    "junior engineer",
+    "junior developer",
+    "entry level",
+    "graduate engineer",
+    "trainee engineer"
   ],
   "skills": [
     "typescript",
@@ -165,11 +171,9 @@
     "engineering manager",
     "head of engineering",
     "cto",
-    "architect",
-    "intern",
-    "trainee",
-    "new grad"
+    "architect"
   ],
+  "seniorYearsThreshold": 3,
   "weights": {
     "roleMatch": 40,
     "strongSkill": 30,
