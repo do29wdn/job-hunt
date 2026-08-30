@@ -100,40 +100,32 @@ const configSchema = z.object({
   dedupeFingerprint: z.enum(["company_title_location", "url", "both"]).default("both"),
 
   // --- sources ---
-  // ATS boards to check — add/remove as needed
-  greenhouseBoards: z.array(z.string()).default([
-    // example boards — replace with your target companies
-    // "datadog", "stripe", "notion"
-  ]),
+  // ATS boards to check — add/remove as needed (fully dynamic via data/config.json)
+  greenhouseBoards: z.array(z.string()).default([]),
   leverBoards: z.array(z.string()).default([]),
   ashbyBoards: z.array(z.string()).default([]),
   smartRecruitersBoards: z.array(z.string()).default([]),
-  smartrecruitersBoards: z.array(z.string()).default([]),
-
-  // Watchlist — high-priority companies (always reported, +15 boost)
-  watchlist: z.array(z.string()).default([
-    "vercel",
-    "linear",
-    "supabase",
-    "notion",
-    "posthog",
-    "openai",
-    "anthropic",
-    "stripe",
-  ]),
-  watchlistBoost: z.number().default(15),
+  // LinkedIn via open-linkedin-jobs (Node, no auth, HTTP) — e.g. ["Full Stack Engineer @ Pune, India", {keyword:"React Developer", location:"Remote"}]
+  linkedinBoards: z.array(z.union([z.string(), z.object({ keyword: z.string(), location: z.string(), limit: z.number().optional() })])).default([]),
+  // JobSpy via Python (supports naukri/indeed/linkedin/google) — e.g. [{site:["naukri"], searchTerm:"Full Stack", location:"Pune, India"}]
+  jobspyBoards: z.array(z.any()).default([]),
+  // Watchlist — high-priority companies (always reported, +10 boost via score.ts)
+  watchlistBoost: z.number().default(10),
   instantAlertThreshold: z.number().default(85),
 
-  // Report
+  // --- health ---
+  healthEnabled: z.boolean().default(true),
+  healthPath: z.string().default("data/ats-health.json"),
+
+  // --- report ---
   reportFull: z.boolean().default(true), // send full md report vs topN only
   maxFullReportJobs: z.number().default(150), // cap for full report to avoid 10k spam
+  includeHealthDigest: z.boolean().default(true),
 
   // --- persistence ---
   seenJobsPath: z.string().default("data/seen-jobs.json"),
-
-  // --- report ---
   reportWindowDays: z.number().default(3),
-});
+}).passthrough();
 
 export type AppConfig = z.infer<typeof configSchema>;
 

@@ -52,6 +52,28 @@
     "plane"
   ],
   "smartRecruitersBoards": [],
+  "linkedinBoards": [
+    "Full Stack Developer @ Pune, India",
+    "React Developer @ Remote",
+    "Node.js Developer @ India",
+    "TypeScript Developer @ Remote"
+  ],
+  "jobspyBoards": [
+    {
+      "site": ["naukri", "linkedin"],
+      "searchTerm": "Full Stack Developer",
+      "location": "Pune, India",
+      "resultsWanted": 20,
+      "hoursOld": 72
+    },
+    {
+      "site": ["naukri", "indeed"],
+      "searchTerm": "React Developer",
+      "location": "India",
+      "resultsWanted": 20,
+      "hoursOld": 72
+    }
+  ],
   "preferredLocations": [
     "pune",
     "remote india",
@@ -91,7 +113,75 @@
     "emea",
     "apac"
   ],
+  "roles": [
+    "Full Stack Developer",
+    "Full Stack Engineer",
+    "Software Engineer",
+    "Software Developer",
+    "Frontend Developer",
+    "Frontend Engineer",
+    "Backend Developer",
+    "Backend Engineer",
+    "React Developer",
+    "Node.js Developer",
+    "TypeScript Developer"
+  ],
+  "roleAliases": [
+    "product engineer",
+    "web engineer",
+    "javascript engineer",
+    "application developer",
+    "sde"
+  ],
+  "skills": [
+    "typescript",
+    "javascript",
+    "react",
+    "node.js",
+    "nodejs",
+    "postgresql",
+    "postgres",
+    "sql",
+    "rest",
+    "api",
+    "tailwind",
+    "git",
+    "full stack",
+    "frontend",
+    "backend",
+    "web development"
+  ],
+  "strongSkills": [
+    "typescript",
+    "react",
+    "node.js",
+    "nodejs",
+    "postgresql"
+  ],
+  "seniorityBlocklist": [
+    "staff engineer",
+    "principal engineer",
+    "director",
+    "engineering manager",
+    "head of engineering",
+    "cto",
+    "architect",
+    "intern",
+    "trainee",
+    "new grad"
+  ],
+  "weights": {
+    "roleMatch": 40,
+    "strongSkill": 30,
+    "location": 15,
+    "remote": 10,
+    "recency": 5
+  },
   "minScoreToReport": 40,
   "topN": 15,
-  "reportWindowDays": 3
+  "reportWindowDays": 3,
+  "healthEnabled": true,
+  "reportFull": true,
+  "maxFullReportJobs": 150,
+  "includeHealthDigest": true
 }

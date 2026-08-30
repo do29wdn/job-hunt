@@ -101,7 +101,12 @@ async function report(cfg: Awaited<ReturnType<typeof loadConfig>>) {
   if (process.env.OPENAI_API_KEY) {
     rescored = await enrichWithAI(rescored, 15);
   }
-  const relevant = rescored.filter((j) => j.score >= cfg.minScoreToReport).sort((a, b) => b.score - a.score);
+  let relevant = rescored.filter((j) => j.score >= cfg.minScoreToReport).sort((a, b) => b.score - a.score);
+  const maxFull = (cfg as any).maxFullReportJobs ?? 150;
+  if ((cfg as any).reportFull && relevant.length > maxFull) {
+    console.log(`[report] capping full report ${relevant.length} -> ${maxFull}`);
+    relevant = relevant.slice(0, maxFull);
+  }
   const top = relevant.slice(0, cfg.topN);
 
   console.log(`Top ${top.length} to report (minScore ${cfg.minScoreToReport}) — full ${relevant.length} relevant`);
@@ -137,8 +142,14 @@ async function report(cfg: Awaited<ReturnType<typeof loadConfig>>) {
 async function main() {
   const cfg = await loadConfig();
   const mode = parseMode();
-  console.log(`Mode: ${mode} | minScore=${cfg.minScoreToReport} topN=${cfg.topN} window=${cfg.reportWindowDays}d`);
-  console.log(`Boards: greenhouse=${cfg.greenhouseBoards.length} lever=${cfg.leverBoards.length} ashby=${cfg.ashbyBoards.length}`);
+  console.log(`Mode: ${mode} | minScore=${cfg.minScoreToReport} topN=${cfg.topN} window=${cfg.reportWindowDays}d | reportFull=${(cfg as any).reportFull} maxFull=${(cfg as any).maxFullReportJobs}`);
+  const gh = cfg.greenhouseBoards.length;
+  const lv = cfg.leverBoards.length;
+  const ab = cfg.ashbyBoards.length;
+  const sr = (cfg as any).smartRecruitersBoards?.length ?? 0;
+  const li = (cfg as any).linkedinBoards?.length ?? 0;
+  const jp = (cfg as any).jobspyBoards?.length ?? 0;
+  console.log(`Boards: greenhouse=${gh} lever=${lv} ashby=${ab} smartRecruiters=${sr} linkedin=${li} jobspy=${jp} total=${gh+lv+ab+sr+li+jp} (+watchlist)`);
 
   let huntResult: Awaited<ReturnType<typeof hunt>> | null = null;
   if (mode === "hunt" || mode === "full") {
@@ -147,15 +158,19 @@ async function main() {
   if (mode === "report" || mode === "full") {
     // if hunt just ran, report from its result to avoid double read
     if (huntResult && mode === "full") {
-      const relevant = huntResult.relevant.sort((a, b) => b.score - a.score);
+      let relevant = huntResult.relevant.sort((a, b) => b.score - a.score);
+      const maxFull = (cfg as any).maxFullReportJobs ?? 150;
+      const reportFull = (cfg as any).reportFull ?? true;
+      if (reportFull && relevant.length > maxFull) {
+        console.log(`[report] capping full report ${relevant.length} -> ${maxFull}`);
+        relevant = relevant.slice(0, maxFull);
+      }
       const stats = {
         period: `Last ${cfg.reportWindowDays} days`,
         found: huntResult.scored.length,
         newCount: huntResult.newJobs.length,
         topCount: Math.min(relevant.length, cfg.topN),
       };
-      // Only send if there are new relevant jobs — avoids spam on daily hunt with no news
-      // For every-3-days schedule, this naturally batches. Full report now sends ALL relevant in markdown.
       if (relevant.length > 0) {
         try { await sendTelegramFull(relevant, stats); } catch (e) { console.error(e); }
         try { await sendEmail(relevant.slice(0, cfg.topN), { period: stats.period, found: stats.found, newCount: stats.newCount }); } catch (e) { console.error(e); }
@@ -164,6 +179,36 @@ async function main() {
       }
     } else {
       await report(cfg);
+    }
+  }
+
+  // Health digest (self-healing) — send weekly or when disabled boards exist
+  if ((cfg as any).includeHealthDigest && (cfg as any).healthEnabled) {
+    try {
+      const { loadHealth, buildHealthMarkdown } = await import("./pipeline/health.js");
+      const store = await loadHealth();
+      const disabledCount = Object.values(store).filter((h: any) => h.disabledUntil && new Date(h.disabledUntil).getTime() > Date.now()).length;
+      const failingCount = Object.values(store).filter((h: any) => h.consecutiveFails > 0).length;
+      const shouldSendHealth = disabledCount > 0 || failingCount > 2 || new Date().getDay() === 0; // Sunday or issues
+      if (shouldSendHealth && Object.keys(store).length > 0) {
+        const md = buildHealthMarkdown(store);
+        const token = process.env.TELEGRAM_BOT_TOKEN;
+        const chatId = process.env.TELEGRAM_CHAT_ID;
+        if (token && chatId) {
+          // send as document via same logic as full report
+          const blob = new Blob([md], { type: "text/markdown" });
+          const form = new FormData();
+          form.append("chat_id", chatId);
+          form.append("document", blob, `ats-health-${new Date().toISOString().slice(0, 10)}.md`);
+          form.append("caption", `🩺 ATS Health — ${disabledCount} disabled, ${failingCount} failing`);
+          await fetch(`https://api.telegram.org/bot${token}/sendDocument`, { method: "POST", body: form as any });
+          console.log("[health] digest sent");
+        } else {
+          console.log("[health] digest (dry):\n" + md.slice(0, 2000));
+        }
+      }
+    } catch (e) {
+      console.warn("[health] digest failed", e);
     }
   }
 }

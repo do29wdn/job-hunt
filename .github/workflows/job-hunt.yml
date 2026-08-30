@@ -26,7 +26,7 @@ permissions:
 jobs:
   hunt:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -45,6 +45,16 @@ jobs:
         run: pnpm install --frozen-lockfile
         # fallback if no lockfile yet
         # run: pnpm install
+
+      - name: Setup Python (for JobSpy Naukri/Indeed)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install JobSpy (optional, for linkedin/naukri dynamic source)
+        run: |
+          pip install -U python-jobspy 2>&1 | tail -n 20 || echo "JobSpy install failed, continuing without it"
+          python3 -c "import jobspy; print('jobspy ready')" 2>&1 || echo "jobspy not available, ATS fallback only"
 
       - name: Determine mode
         id: mode
@@ -75,27 +85,25 @@ jobs:
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
           EMAIL_TO: ${{ secrets.EMAIL_TO }}
           EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
           MODE: ${{ steps.mode.outputs.mode }}
           DRY_RUN: ${{ inputs.dry_run }}
         run: |
           echo "Running in mode: $MODE"
           pnpm run start -- --mode=$MODE
 
-      - name: Commit updated seen-jobs
+      - name: Commit updated state (seen-jobs + health)
         if: always()
         run: |
-          if [ -f data/seen-jobs.json ]; then
-            git config user.name "job-hunter-bot"
-            git config user.email "job-hunter@users.noreply.github.com"
-            git add data/seen-jobs.json
-            if git diff --cached --quiet; then
-              echo "No changes to commit"
-            else
-              git commit -m "chore: update seen-jobs [skip ci]"
-              git push
-            fi
+          git config user.name "job-hunter-bot"
+          git config user.email "job-hunter@users.noreply.github.com"
+          git add data/seen-jobs.json data/ats-health.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
           else
-            echo "No seen-jobs.json found"
+            git commit -m "chore: update seen-jobs + health [skip ci]"
+            git push
           fi
 
       # Simpler alternative: if you prefer every 3 days only (no daily hunt), disable first cron above
