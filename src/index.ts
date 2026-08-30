@@ -5,8 +5,9 @@ import { filterJobs } from "./pipeline/filter.js";
 import { dedupe } from "./pipeline/dedupe.js";
 import { scoreMany } from "./pipeline/score.js";
 import { loadSeenJobs, saveSeenJobs, partitionNewJobs } from "./storage/seen-jobs.js";
-import { sendTelegram } from "./notifications/telegram.js";
+import { sendTelegram, sendTelegramFull, sendInstantAlert } from "./notifications/telegram.js";
 import { sendEmail } from "./notifications/email.js";
+import { enrichWithAI } from "./pipeline/ai.js";
 import type { ScoredJob } from "./types.js";
 import { readFile } from "node:fs/promises";
 
@@ -41,9 +42,25 @@ async function hunt(cfg: Awaited<ReturnType<typeof loadConfig>>) {
   const { newJobs, alreadySeen } = partitionNewJobs(unique, seen);
   console.log(`New: ${newJobs.length}, Already seen: ${alreadySeen.length}`);
 
-  const scored = scoreMany(newJobs, cfg);
+  let scored = scoreMany(newJobs, cfg);
+  // Optional AI enrichment for top 15 if key set
+  if (process.env.OPENAI_API_KEY) {
+    console.log("[ai] Enriching top jobs...");
+    scored = await enrichWithAI(scored, 15);
+  }
   const relevant = scored.filter((j) => j.score >= cfg.minScoreToReport);
   console.log(`Scored: ${scored.length} new, ${relevant.length} >= ${cfg.minScoreToReport} threshold`);
+
+  // Instant alerts for 85%+ (or watchlist 80%+)
+  const instant = scored.filter((j) => j.score >= 85 || ((j as any).isWatchlist && j.score >= 80));
+  if (instant.length > 0) {
+    console.log(`[alert] ${instant.length} instant high-match jobs`);
+    try {
+      await sendInstantAlert(instant);
+    } catch (e) {
+      console.error("[alert] failed", e);
+    }
+  }
 
   // Persist: update seen with ALL unique (so we don't re-report), but store scored version for report window
   const now = new Date().toISOString();
@@ -80,10 +97,14 @@ async function report(cfg: Awaited<ReturnType<typeof loadConfig>>) {
   }
 
   // Re-score in case config changed, then rank
-  const rescored = scoreMany(candidates as any, cfg);
-  const top = rescored.filter((j) => j.score >= cfg.minScoreToReport).sort((a, b) => b.score - a.score).slice(0, cfg.topN);
+  let rescored = scoreMany(candidates as any, cfg);
+  if (process.env.OPENAI_API_KEY) {
+    rescored = await enrichWithAI(rescored, 15);
+  }
+  const relevant = rescored.filter((j) => j.score >= cfg.minScoreToReport).sort((a, b) => b.score - a.score);
+  const top = relevant.slice(0, cfg.topN);
 
-  console.log(`Top ${top.length} to report (minScore ${cfg.minScoreToReport})`);
+  console.log(`Top ${top.length} to report (minScore ${cfg.minScoreToReport}) — full ${relevant.length} relevant`);
   top.forEach((j, i) => console.log(`${i + 1}. [${j.score}%] ${j.title} @ ${j.company} — ${j.location} — ${j.url}`));
 
   const stats = {
@@ -93,14 +114,14 @@ async function report(cfg: Awaited<ReturnType<typeof loadConfig>>) {
     topCount: top.length,
   };
 
-  // Notifications — isolated failures
+  // Notifications — isolated failures — send FULL relevant list in markdown
   try {
-    await sendTelegram(top, stats);
+    await sendTelegramFull(relevant, stats);
   } catch (e) {
     console.error("[telegram] failed", e);
   }
   try {
-    await sendEmail(top, { period: stats.period, found: stats.found, newCount: stats.newCount });
+    await sendEmail(relevant.slice(0, cfg.topN), { period: stats.period, found: stats.found, newCount: stats.newCount });
   } catch (e) {
     console.error("[email] failed", e);
   }
@@ -126,18 +147,18 @@ async function main() {
   if (mode === "report" || mode === "full") {
     // if hunt just ran, report from its result to avoid double read
     if (huntResult && mode === "full") {
-      const top = huntResult.relevant.sort((a, b) => b.score - a.score).slice(0, cfg.topN);
+      const relevant = huntResult.relevant.sort((a, b) => b.score - a.score);
       const stats = {
         period: `Last ${cfg.reportWindowDays} days`,
         found: huntResult.scored.length,
         newCount: huntResult.newJobs.length,
-        topCount: top.length,
+        topCount: Math.min(relevant.length, cfg.topN),
       };
       // Only send if there are new relevant jobs — avoids spam on daily hunt with no news
-      // For every-3-days schedule, this naturally batches
-      if (top.length > 0) {
-        try { await sendTelegram(top, stats); } catch (e) { console.error(e); }
-        try { await sendEmail(top, { period: stats.period, found: stats.found, newCount: stats.newCount }); } catch (e) { console.error(e); }
+      // For every-3-days schedule, this naturally batches. Full report now sends ALL relevant in markdown.
+      if (relevant.length > 0) {
+        try { await sendTelegramFull(relevant, stats); } catch (e) { console.error(e); }
+        try { await sendEmail(relevant.slice(0, cfg.topN), { period: stats.period, found: stats.found, newCount: stats.newCount }); } catch (e) { console.error(e); }
       } else {
         console.log("[report] No new relevant jobs — skipping notification (still persisted)");
       }

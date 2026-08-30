@@ -90,9 +90,46 @@ export function scoreJob(job: NormalizedJob, cfg: AppConfig): ScoredJob {
     gaps.push(`Missing: ${missingStrong.slice(0, 2).join(", ")}`);
   }
 
+  // Visa / sponsorship signals (abroad)
+  const visaPositive = ["visa sponsorship", "sponsor", "global payroll", "relocation", "work permit", "h1b", "eu blue card"];
+  const visaNegative = ["us citizen only", "security clearance", "citizenship required", "no sponsorship"];
+  if (visaPositive.some((k) => includesCI(combined, k) || includesCI(loc, k))) {
+    score += 5;
+    reasons.push("Visa/sponsorship mentioned");
+    (job as any).visaSupport = "Visa support mentioned";
+  }
+  if (visaNegative.some((k) => includesCI(combined, k))) {
+    score -= 10;
+    gaps.push("Citizenship/clearance required — likely no sponsorship");
+    (job as any).visaSupport = "No sponsorship";
+  }
+
+  // Timezone / IST overlap bonus
+  if (includesCI(combined, "ist") || includesCI(combined, "india time") || includesCI(loc, "ist")) {
+    score += 3;
+    reasons.push("IST overlap mentioned");
+  }
+  if (includesCI(combined, "async") || includesCI(combined, "flexible hours")) {
+    score += 2;
+    reasons.push("Async/flexible hours");
+  }
+
+  // Salary hints (extract if present)
+  const salaryMatch = combined.match(/(\$|€|£|₹)\s?[\d,]+(?:\s?k)?(?:\s?-\s?(\$|€|£|₹)?\s?[\d,]+k?)?/i) || combined.match(/(\d+)\s*(usd|eur|inr)/i);
+  if (salaryMatch) {
+    (job as any).salary = salaryMatch[0].slice(0, 80);
+    reasons.push(`Compensation: ${(job as any).salary}`);
+  }
+
+  // Watchlist bonus (+10, capped)
+  if ((job as any).isWatchlist) {
+    score += 10;
+    reasons.push("⭐ Watchlist company");
+  }
+
   score = Math.max(0, Math.min(100, score));
 
-  return { ...job, score, reasons, gaps, matchedSkills };
+  return { ...job, score, reasons, gaps, matchedSkills } as ScoredJob;
 }
 
 export function scoreMany(jobs: NormalizedJob[], cfg: AppConfig): ScoredJob[] {

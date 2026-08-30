@@ -107,6 +107,26 @@ const configSchema = z.object({
   ]),
   leverBoards: z.array(z.string()).default([]),
   ashbyBoards: z.array(z.string()).default([]),
+  smartRecruitersBoards: z.array(z.string()).default([]),
+  smartrecruitersBoards: z.array(z.string()).default([]),
+
+  // Watchlist — high-priority companies (always reported, +15 boost)
+  watchlist: z.array(z.string()).default([
+    "vercel",
+    "linear",
+    "supabase",
+    "notion",
+    "posthog",
+    "openai",
+    "anthropic",
+    "stripe",
+  ]),
+  watchlistBoost: z.number().default(15),
+  instantAlertThreshold: z.number().default(85),
+
+  // Report
+  reportFull: z.boolean().default(true), // send full md report vs topN only
+  maxFullReportJobs: z.number().default(150), // cap for full report to avoid 10k spam
 
   // --- persistence ---
   seenJobsPath: z.string().default("data/seen-jobs.json"),

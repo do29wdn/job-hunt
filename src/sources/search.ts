@@ -2,16 +2,24 @@ import type { JobSource, RawJob } from "../types.js";
 import { createGreenhouseSource } from "./greenhouse.js";
 import { createLeverSource } from "./lever.js";
 import { createAshbySource } from "./ashby.js";
+import { createSmartRecruitersSource } from "./smartrecruiters.js";
+import { loadWatchlistSources } from "./watchlist.js";
 import type { AppConfig } from "../config.js";
 
 /**
  * Aggregate all sources. Failures are isolated — one broken board doesn't kill pipeline.
  */
 export async function fetchAllSources(cfg: AppConfig): Promise<{ jobs: RawJob[]; errors: string[] }> {
+  const watchlistSources = await loadWatchlistSources();
+  const smartSources = (cfg as any).smartRecruitersBoards
+    ? ((cfg as any).smartRecruitersBoards as string[]).map(createSmartRecruitersSource)
+    : [];
   const sources: JobSource[] = [
     ...cfg.greenhouseBoards.map(createGreenhouseSource),
     ...cfg.leverBoards.map(createLeverSource),
     ...cfg.ashbyBoards.map(createAshbySource),
+    ...smartSources,
+    ...watchlistSources,
   ];
 
   if (sources.length === 0) {

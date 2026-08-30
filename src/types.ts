@@ -11,6 +11,8 @@ export type NormalizedJob = {
   postedAt?: string; // ISO
   firstSeenAt: string; // ISO
   rawTitle?: string;
+  salary?: string;
+  isWatchlist?: boolean;
 };
 
 export type RawJob = {
@@ -23,6 +25,7 @@ export type RawJob = {
   url: string;
   employmentType?: string;
   postedAt?: string;
+  salary?: string;
 };
 
 export type ScoredJob = NormalizedJob & {
@@ -30,6 +33,8 @@ export type ScoredJob = NormalizedJob & {
   reasons: string[];
   gaps: string[];
   matchedSkills: string[];
+  aiExplanation?: string;
+  visaSupport?: string;
 };
 
 export type PipelineResult = {

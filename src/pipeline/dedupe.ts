@@ -12,13 +12,15 @@ function normUrl(url: string): string {
 }
 
 export function dedupe(jobs: NormalizedJob[]): { unique: NormalizedJob[]; duplicates: NormalizedJob[] } {
+  // Prefer watchlist jobs: sort so watchlist comes first, then dedupe keeps watchlist version
+  const sorted = [...jobs].sort((a, b) => Number(!!(b as any).isWatchlist) - Number(!!(a as any).isWatchlist));
   const seenFingerprints = new Set<string>();
   const seenUrls = new Set<string>();
   const seenExternalIds = new Set<string>();
   const unique: NormalizedJob[] = [];
   const duplicates: NormalizedJob[] = [];
 
-  for (const job of jobs) {
+  for (const job of sorted) {
     const fp = job.id;
     const url = normUrl(job.url);
     const eid = job.externalId ? `${job.source}:${job.externalId}` : null;

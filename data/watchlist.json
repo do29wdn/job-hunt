@@ -1,0 +1,19 @@
+{
+  "companies": [
+    { "slug": "vercel", "ats": "greenhouse", "priority": "high" },
+    { "slug": "linear", "ats": "ashby", "priority": "high" },
+    { "slug": "notion", "ats": "ashby", "priority": "high" },
+    { "slug": "supabase", "ats": "ashby", "priority": "high" },
+    { "slug": "posthog", "ats": "ashby", "priority": "high" },
+    { "slug": "anthropic", "ats": "greenhouse", "priority": "high" },
+    { "slug": "perplexity", "ats": "ashby", "priority": "medium" },
+    { "slug": "cursor", "ats": "ashby", "priority": "high" },
+    { "slug": "replit", "ats": "ashby", "priority": "medium" },
+    { "slug": "databricks", "ats": "greenhouse", "priority": "high" },
+    { "slug": "figma", "ats": "greenhouse", "priority": "high" },
+    { "slug": "gitlab", "ats": "greenhouse", "priority": "high" },
+    { "slug": "plane", "ats": "ashby", "priority": "high" },
+    { "slug": "openai", "ats": "ashby", "priority": "high" },
+    { "slug": "cloudflare", "ats": "greenhouse", "priority": "high" }
+  ]
+}

@@ -28,6 +28,8 @@ export function normalize(raw: RawJob): NormalizedJob | null {
     postedAt: raw.postedAt,
     firstSeenAt: now,
     rawTitle: raw.title,
+    salary: (raw as any).salary,
+    isWatchlist: (raw as any).isWatchlist ?? raw.source.includes("watchlist"),
   };
 }
 
