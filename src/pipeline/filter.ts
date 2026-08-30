@@ -1,15 +1,11 @@
 import type { NormalizedJob } from "../types.js";
 import type { AppConfig } from "../config.js";
+import { containsAny } from "../utils.js";
 
 export type FilterResult = {
   kept: NormalizedJob[];
   dropped: Array<{ job: NormalizedJob; reason: string }>;
 };
-
-function containsAny(haystack: string, needles: string[]): boolean {
-  const h = haystack.toLowerCase();
-  return needles.some((n) => h.includes(n.toLowerCase()));
-}
 
 function isSeniorBlocked(job: NormalizedJob, cfg: AppConfig): string | null {
   const text = `${job.title} ${job.description ?? ""}`.toLowerCase();

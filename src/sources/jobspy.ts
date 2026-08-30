@@ -1,4 +1,4 @@
-import { writeFile, readFile, mkdir } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import { exec as execCb } from "node:child_process";
 import { promisify } from "node:util";
 import { existsSync } from "node:fs";

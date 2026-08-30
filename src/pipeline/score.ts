@@ -1,10 +1,7 @@
 import type { NormalizedJob, ScoredJob } from "../types.js";
 import type { AppConfig } from "../config.js";
-import { AhoCorasick, fuzzyMatch, levenshtein, MaxHeap } from "./ds.js";
-
-function includesCI(haystack: string, needle: string): boolean {
-  return haystack.toLowerCase().includes(needle.toLowerCase());
-}
+import { AhoCorasick, fuzzyMatch } from "./ds.js";
+import { includesCI } from "../utils.js";
 
 // Cache automata per config key
 const acCache = new Map<string, AhoCorasick>();
@@ -160,21 +157,7 @@ export function scoreJob(job: NormalizedJob, cfg: AppConfig): ScoredJob {
 
 export function scoreMany(jobs: NormalizedJob[], cfg: AppConfig): ScoredJob[] {
   const scored = jobs.map((j) => scoreJob(j, cfg));
-  // Multi-criteria sort: score ↓, watchlist ↑, recency ↓, company ↑ (stable)
-  // Use heap for top-K efficiency, but still sort fully for report determinism
-  // Heavy DS: MaxHeap O(n log k) for topK, plus stable sort
-  const heap = new MaxHeap<ScoredJob>((a, b) => {
-    if (a.score !== b.score) return a.score - b.score;
-    const aWl = (a as any).isWatchlist ? 1 : 0;
-    const bWl = (b as any).isWatchlist ? 1 : 0;
-    if (aWl !== bWl) return aWl - bWl;
-    const aTime = a.postedAt ? new Date(a.postedAt).getTime() : 0;
-    const bTime = b.postedAt ? new Date(b.postedAt).getTime() : 0;
-    if (aTime !== bTime) return aTime - bTime;
-    return a.company.localeCompare(b.company);
-  });
-  for (const s of scored) heap.push(s);
-  // For full list, return stable sort (deterministic)
+  // Multi-criteria stable sort: score ↓, watchlist ↑, recency ↓, title ↑
   return scored.sort((a, b) => {
     if (b.score !== a.score) return b.score - a.score;
     const aWl = (a as any).isWatchlist ? 1 : 0;

@@ -5,7 +5,7 @@ import { filterJobs } from "./pipeline/filter.js";
 import { dedupe } from "./pipeline/dedupe.js";
 import { scoreMany } from "./pipeline/score.js";
 import { loadSeenJobs, saveSeenJobs, partitionNewJobs } from "./storage/seen-jobs.js";
-import { sendTelegram, sendTelegramFull, sendInstantAlert } from "./notifications/telegram.js";
+import { sendTelegramFull, sendInstantAlert } from "./notifications/telegram.js";
 import { sendEmail } from "./notifications/email.js";
 import { enrichWithAI, enrichWithAIHeavy } from "./pipeline/ai.js";
 import type { ScoredJob } from "./types.js";

@@ -1,8 +1,5 @@
 import type { ScoredJob } from "../types.js";
-
-function escapeHtml(s: string): string {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
+import { escapeHtml } from "../utils.js";
 
 function sourceLabel(job: ScoredJob): string {
   const src = job.source.replace("watchlist:", "");

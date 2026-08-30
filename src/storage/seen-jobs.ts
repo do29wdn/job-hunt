@@ -1,6 +1,6 @@
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { dirname } from "node:path";
-import type { NormalizedJob, ScoredJob } from "../types.js";
+import type { NormalizedJob } from "../types.js";
 
 export async function loadSeenJobs(path: string): Promise<Map<string, NormalizedJob & { lastSeenAt: string }>> {
   try {
@@ -40,19 +40,4 @@ export function partitionNewJobs(
     else newJobs.push(j);
   }
   return { newJobs, alreadySeen };
-}
-
-// For report mode: get jobs first seen within windowDays
-export async function getJobsInWindow(
-  path: string,
-  windowDays: number,
-): Promise<ScoredJob[]> {
-  try {
-    const raw = await readFile(path, "utf-8");
-    const arr = JSON.parse(raw) as ScoredJob[];
-    const cutoff = Date.now() - windowDays * 24 * 60 * 60 * 1000;
-    return arr.filter((j) => new Date(j.firstSeenAt).getTime() >= cutoff);
-  } catch {
-    return [];
-  }
 }

@@ -37,15 +37,6 @@ export type ScoredJob = NormalizedJob & {
   visaSupport?: string;
 };
 
-export type PipelineResult = {
-  totalFetched: number;
-  afterNormalize: number;
-  afterFilter: number;
-  afterDedupe: number;
-  newJobs: number;
-  scored: ScoredJob[];
-};
-
 export interface JobSource {
   name: string;
   fetchJobs(): Promise<RawJob[]>;
