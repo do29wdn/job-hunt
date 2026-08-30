@@ -1,0 +1,42 @@
+{
+  "greenhouseBoards": [
+    "gitlab",
+    "stripe",
+    "datadog",
+    "coinbase",
+    "postman",
+    "dropbox",
+    "twilio",
+    "reddit",
+    "airbnb",
+    "cloudflare",
+    "mongodb",
+    "elastic",
+    "figma",
+    "asana"
+  ],
+  "leverBoards": [
+    "spotify"
+  ],
+  "ashbyBoards": [
+    "plane",
+    "notion",
+    "openai",
+    "linear"
+  ],
+  "preferredLocations": [
+    "pune",
+    "remote india",
+    "remote - india",
+    "india remote",
+    "mumbai",
+    "bengaluru",
+    "bangalore",
+    "hyderabad",
+    "remote",
+    "india"
+  ],
+  "minScoreToReport": 45,
+  "topN": 10,
+  "reportWindowDays": 3
+}
