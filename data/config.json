@@ -61,14 +61,20 @@
   ],
   "jobspyBoards": [
     {
-      "site": ["naukri", "linkedin"],
+      "site": [
+        "naukri",
+        "linkedin"
+      ],
       "searchTerm": "Full Stack Developer",
       "location": "Pune, India",
       "resultsWanted": 20,
       "hoursOld": 72
     },
     {
-      "site": ["naukri", "indeed"],
+      "site": [
+        "naukri",
+        "indeed"
+      ],
       "searchTerm": "React Developer",
       "location": "India",
       "resultsWanted": 20,
@@ -91,7 +97,6 @@
     "chennai",
     "kolkata",
     "ahmedabad",
-    "remote",
     "india",
     "hybrid pune",
     "hybrid india"

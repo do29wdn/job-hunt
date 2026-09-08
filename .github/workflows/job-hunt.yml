@@ -4,7 +4,7 @@ on:
   schedule:
     # Daily hunt at 09:00 IST = 03:30 UTC
     - cron: "30 3 * * *"
-    # Every 3 days full report at 09:15 IST = 03:45 UTC (1st,4th,7th...)
+    # Full digest every 3 days at 09:15 IST = 03:45 UTC
     - cron: "45 3 1,4,7,10,13,16,19,22,25,28,31 * *"
   workflow_dispatch:
     inputs:
@@ -15,13 +15,19 @@ on:
         type: choice
         options: [full, hunt, report]
       dry_run:
-        description: "Dry run (no notifications)"
+        description: "Dry run (notifications are genuinely suppressed)"
         required: false
         default: false
         type: boolean
 
 permissions:
   contents: write
+
+# Never run two hunts at once — they would race on data/seen-jobs.json and the
+# loser's `git push` would be rejected.
+concurrency:
+  group: job-hunt
+  cancel-in-progress: false
 
 jobs:
   hunt:
@@ -33,18 +39,17 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+          cache: pnpm
 
       - name: Install deps
         run: pnpm install --frozen-lockfile
-        # fallback if no lockfile yet
-        # run: pnpm install
 
       - name: Setup Python (for JobSpy Naukri/Indeed)
         uses: actions/setup-python@v5
@@ -56,21 +61,21 @@ jobs:
           pip install -U python-jobspy 2>&1 | tail -n 20 || echo "JobSpy install failed, continuing without it"
           python3 -c "import jobspy; print('jobspy ready')" 2>&1 || echo "jobspy not available, ATS fallback only"
 
-      - name: Determine mode
+      - name: Resolve mode
         id: mode
         run: |
           if [ "${{ github.event_name }}" = "schedule" ]; then
-            HOUR_MIN=$(date -u +%H:%M)
-            # 03:30 = hunt only, 03:45 = full report
-            if [ "$HOUR_MIN" = "03:30" ] || [ "$HOUR_MIN" = "03:31" ]; then
-              echo "mode=hunt" >> $GITHUB_OUTPUT
+            # Identify the run by WHICH cron expression fired (github.event.schedule),
+            # NOT by wall-clock time: GitHub cron jitter of 5-15 minutes used to turn
+            # the daily 03:30 hunt into an accidental full report.
+            if [ "${{ github.event.schedule }}" = "30 3 * * *" ]; then
+              echo "mode=hunt" >> "$GITHUB_OUTPUT"
             else
-              echo "mode=full" >> $GITHUB_OUTPUT
+              echo "mode=full" >> "$GITHUB_OUTPUT"
             fi
           else
-            echo "mode=${{ inputs.mode }}" >> $GITHUB_OUTPUT
+            echo "mode=${{ inputs.mode }}" >> "$GITHUB_OUTPUT"
           fi
-          echo "Resolved mode: $(cat $GITHUB_OUTPUT)"
 
       - name: Run job hunter
         env:
@@ -87,11 +92,10 @@ jobs:
           EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
-          MODE: ${{ steps.mode.outputs.mode }}
           DRY_RUN: ${{ inputs.dry_run }}
         run: |
-          echo "Running in mode: $MODE"
-          pnpm run start -- --mode=$MODE
+          echo "Running in mode: ${{ steps.mode.outputs.mode }}"
+          pnpm run start -- --mode=${{ steps.mode.outputs.mode }}
 
       - name: Commit updated state (seen-jobs + health)
         if: always()
@@ -103,8 +107,10 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "chore: update seen-jobs + health [skip ci]"
-            git push
+            if ! git push; then
+              # someone pushed while we ran (manual edit, manual run) — rebase ours on top and retry
+              git fetch origin main
+              git rebase origin/main || true
+              git push
+            fi
           fi
-
-      # Simpler alternative: if you prefer every 3 days only (no daily hunt), disable first cron above
-      # and keep only one cron like: "45 3 */3 * *"
