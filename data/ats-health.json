@@ -21,33 +21,33 @@
   },
   "greenhouse:elastic": {
     "board": "greenhouse:elastic",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 271,
-    "lastJobCount": 373,
-    "avgJobs": 379
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 160,
+    "lastJobCount": 382,
+    "avgJobs": 380
   },
   "greenhouse:stripe": {
     "board": "greenhouse:stripe",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 244,
-    "lastJobCount": 773,
-    "avgJobs": 781
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 88,
+    "lastJobCount": 778,
+    "avgJobs": 780
   },
   "greenhouse:coinbase": {
     "board": "greenhouse:coinbase",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 275,
-    "lastJobCount": 253,
-    "avgJobs": 257
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 84,
+    "lastJobCount": 252,
+    "avgJobs": 255
   },
   "greenhouse:gitlab": {
     "board": "greenhouse:gitlab",
@@ -61,53 +61,53 @@
   },
   "greenhouse:mongodb": {
     "board": "greenhouse:mongodb",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 355,
-    "lastJobCount": 412,
-    "avgJobs": 403
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 92,
+    "lastJobCount": 417,
+    "avgJobs": 407
   },
   "greenhouse:brex": {
     "board": "greenhouse:brex",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 308,
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 75,
     "lastJobCount": 249,
-    "avgJobs": 263
+    "avgJobs": 259
   },
   "greenhouse:pinterest": {
     "board": "greenhouse:pinterest",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 363,
-    "lastJobCount": 175,
-    "avgJobs": 172
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 71,
+    "lastJobCount": 174,
+    "avgJobs": 173
   },
   "greenhouse:reddit": {
     "board": "greenhouse:reddit",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 366,
-    "lastJobCount": 143,
-    "avgJobs": 145
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 78,
+    "lastJobCount": 148,
+    "avgJobs": 146
   },
   "greenhouse:robinhood": {
     "board": "greenhouse:robinhood",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 366,
-    "lastJobCount": 166,
-    "avgJobs": 165
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 70,
+    "lastJobCount": 163,
+    "avgJobs": 164
   },
   "greenhouse:cloudflare": {
     "board": "greenhouse:cloudflare",
@@ -121,22 +121,22 @@
   },
   "greenhouse:datadog": {
     "board": "greenhouse:datadog",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 61,
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 41,
     "lastJobCount": 382,
     "avgJobs": 381
   },
   "greenhouse:twilio": {
     "board": "greenhouse:twilio",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 55,
-    "lastJobCount": 106,
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 29,
+    "lastJobCount": 109,
     "avgJobs": 110
   },
   "greenhouse:figma": {
@@ -151,52 +151,52 @@
   },
   "greenhouse:gusto": {
     "board": "greenhouse:gusto",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 47,
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 30,
     "lastJobCount": 82,
     "avgJobs": 81
   },
   "greenhouse:asana": {
     "board": "greenhouse:asana",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 54,
-    "lastJobCount": 113,
-    "avgJobs": 113
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 29,
+    "lastJobCount": 111,
+    "avgJobs": 112
   },
   "greenhouse:airbnb": {
     "board": "greenhouse:airbnb",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 65,
-    "lastJobCount": 201,
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 26,
+    "lastJobCount": 202,
     "avgJobs": 201
   },
   "greenhouse:instacart": {
     "board": "greenhouse:instacart",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 54,
-    "lastJobCount": 85,
-    "avgJobs": 84
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 26,
+    "lastJobCount": 92,
+    "avgJobs": 86
   },
   "greenhouse:celonis": {
     "board": "greenhouse:celonis",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 57,
-    "lastJobCount": 264,
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 36,
+    "lastJobCount": 262,
     "avgJobs": 263
   },
   "greenhouse:vercel": {
@@ -211,102 +211,102 @@
   },
   "greenhouse:helsing": {
     "board": "greenhouse:helsing",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 47,
-    "lastJobCount": 176,
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 26,
+    "lastJobCount": 175,
     "avgJobs": 175
   },
   "greenhouse:intercom": {
     "board": "greenhouse:intercom",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 48,
-    "lastJobCount": 121,
-    "avgJobs": 117
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 30,
+    "lastJobCount": 120,
+    "avgJobs": 118
   },
   "greenhouse:postman": {
     "board": "greenhouse:postman",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 44,
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 22,
     "lastJobCount": 0,
     "avgJobs": 1
   },
   "greenhouse:dropbox": {
     "board": "greenhouse:dropbox",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 47,
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 27,
     "lastJobCount": 47,
-    "avgJobs": 44
+    "avgJobs": 45
   },
   "greenhouse:hightouch": {
     "board": "greenhouse:hightouch",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 43,
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 29,
     "lastJobCount": 0,
     "avgJobs": 1
   },
   "greenhouse:astranis": {
     "board": "greenhouse:astranis",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 49,
-    "lastJobCount": 173,
-    "avgJobs": 179
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 26,
+    "lastJobCount": 170,
+    "avgJobs": 176
   },
   "greenhouse:lucidmotors": {
     "board": "greenhouse:lucidmotors",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 58,
-    "lastJobCount": 486,
-    "avgJobs": 480
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 33,
+    "lastJobCount": 496,
+    "avgJobs": 485
   },
   "greenhouse:redwoodmaterials": {
     "board": "greenhouse:redwoodmaterials",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 52,
-    "lastJobCount": 105,
-    "avgJobs": 110
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 43,
+    "lastJobCount": 107,
+    "avgJobs": 109
   },
   "greenhouse:inversionspace": {
     "board": "greenhouse:inversionspace",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 55,
-    "lastJobCount": 58,
-    "avgJobs": 66
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 36,
+    "lastJobCount": 55,
+    "avgJobs": 63
   },
   "lever:spotify": {
     "board": "lever:spotify",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 2081,
-    "lastJobCount": 94,
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 1002,
+    "lastJobCount": 91,
     "avgJobs": 91
   },
   "ashby:openai": {
@@ -321,31 +321,31 @@
   },
   "ashby:airwallex": {
     "board": "ashby:airwallex",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 700,
-    "lastJobCount": 493,
-    "avgJobs": 490
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 664,
+    "lastJobCount": 495,
+    "avgJobs": 492
   },
   "ashby:elevenlabs": {
     "board": "ashby:elevenlabs",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 193,
-    "lastJobCount": 125,
-    "avgJobs": 126
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 71,
+    "lastJobCount": 122,
+    "avgJobs": 125
   },
   "ashby:sierra": {
     "board": "ashby:sierra",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 329,
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 154,
     "lastJobCount": 194,
     "avgJobs": 195
   },
@@ -361,13 +361,13 @@
   },
   "ashby:ramp": {
     "board": "ashby:ramp",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 269,
-    "lastJobCount": 185,
-    "avgJobs": 182
+    "lastSuccess": "2026-11-21T11:38:03.016Z",
+    "lastLatencyMs": 191,
+    "lastJobCount": 187,
+    "avgJobs": 184
   },
   "ashby:cursor": {
     "board": "ashby:cursor",
@@ -381,13 +381,13 @@
   },
   "ashby:snowflake": {
     "board": "ashby:snowflake",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 418,
-    "lastJobCount": 379,
-    "avgJobs": 378
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 256,
+    "lastJobCount": 374,
+    "avgJobs": 377
   },
   "ashby:supabase": {
     "board": "ashby:supabase",
@@ -401,33 +401,33 @@
   },
   "ashby:vanta": {
     "board": "ashby:vanta",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 120,
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 76,
     "lastJobCount": 69,
-    "avgJobs": 74
+    "avgJobs": 73
   },
   "ashby:harvey": {
     "board": "ashby:harvey",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.877Z",
-    "lastLatencyMs": 466,
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 302,
     "lastJobCount": 388,
     "avgJobs": 389
   },
   "ashby:crusoe": {
     "board": "ashby:crusoe",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.878Z",
-    "lastLatencyMs": 452,
-    "lastJobCount": 325,
-    "avgJobs": 323
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 465,
+    "lastJobCount": 316,
+    "avgJobs": 321
   },
   "ashby:replit": {
     "board": "ashby:replit",
@@ -441,13 +441,13 @@
   },
   "ashby:docker": {
     "board": "ashby:docker",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.878Z",
-    "lastLatencyMs": 162,
-    "lastJobCount": 52,
-    "avgJobs": 52
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 112,
+    "lastJobCount": 50,
+    "avgJobs": 51
   },
   "ashby:plane": {
     "board": "ashby:plane",
@@ -461,13 +461,13 @@
   },
   "linkedin:Full Stack Developer@Pune, India": {
     "board": "linkedin:Full Stack Developer@Pune, India",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.878Z",
-    "lastLatencyMs": 530,
-    "lastJobCount": 10,
-    "avgJobs": 7
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 67,
+    "lastJobCount": 0,
+    "avgJobs": 5
   },
   "linkedin:React Developer@Remote": {
     "board": "linkedin:React Developer@Remote",
@@ -481,13 +481,13 @@
   },
   "linkedin:Node.js Developer@India": {
     "board": "linkedin:Node.js Developer@India",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.878Z",
-    "lastLatencyMs": 469,
-    "lastJobCount": 10,
-    "avgJobs": 8
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 116,
+    "lastJobCount": 0,
+    "avgJobs": 6
   },
   "linkedin:TypeScript Developer@Remote": {
     "board": "linkedin:TypeScript Developer@Remote",
@@ -502,205 +502,205 @@
   "jobspy:naukri,linkedin:Full Stack Developer@Pune, India": {
     "board": "jobspy:naukri,linkedin:Full Stack Developer@Pune, India",
     "success": 17,
-    "fail": 12,
-    "consecutiveFails": 12,
+    "fail": 13,
+    "consecutiveFails": 13,
     "lastSuccess": "2026-09-08T03:43:53.041Z",
-    "lastLatencyMs": 7351,
+    "lastLatencyMs": 4292,
     "lastJobCount": 0,
     "avgJobs": 0,
-    "lastFail": "2026-11-14T10:49:26.935Z",
-    "disabledUntil": "2026-11-21T10:49:26.935Z"
+    "lastFail": "2026-11-21T11:38:03.017Z",
+    "disabledUntil": "2026-11-28T11:38:03.017Z"
   },
   "jobspy:naukri,indeed:React Developer@India": {
     "board": "jobspy:naukri,indeed:React Developer@India",
     "success": 17,
-    "fail": 12,
-    "consecutiveFails": 12,
+    "fail": 13,
+    "consecutiveFails": 13,
     "lastSuccess": "2026-09-08T03:43:53.041Z",
-    "lastLatencyMs": 1759,
+    "lastLatencyMs": 1478,
     "lastJobCount": 0,
     "avgJobs": 0,
-    "lastFail": "2026-11-14T10:49:26.935Z",
-    "disabledUntil": "2026-11-21T10:49:26.935Z"
+    "lastFail": "2026-11-21T11:38:03.017Z",
+    "disabledUntil": "2026-11-28T11:38:03.017Z"
   },
   "watchlist:greenhouse:vercel": {
     "board": "watchlist:greenhouse:vercel",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.878Z",
-    "lastLatencyMs": 106,
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 26,
     "lastJobCount": 86,
     "avgJobs": 87
   },
   "watchlist:ashby:linear": {
     "board": "watchlist:ashby:linear",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.878Z",
-    "lastLatencyMs": 24,
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 44,
     "lastJobCount": 32,
     "avgJobs": 32
   },
   "watchlist:ashby:notion": {
     "board": "watchlist:ashby:notion",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.878Z",
-    "lastLatencyMs": 106,
-    "lastJobCount": 168,
-    "avgJobs": 167
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 401,
+    "lastJobCount": 170,
+    "avgJobs": 168
   },
   "watchlist:ashby:supabase": {
     "board": "watchlist:ashby:supabase",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.878Z",
-    "lastLatencyMs": 45,
-    "lastJobCount": 79,
-    "avgJobs": 77
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 106,
+    "lastJobCount": 80,
+    "avgJobs": 78
   },
   "watchlist:ashby:posthog": {
     "board": "watchlist:ashby:posthog",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.878Z",
-    "lastLatencyMs": 46,
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 24,
     "lastJobCount": 9,
     "avgJobs": 9
   },
   "watchlist:greenhouse:anthropic": {
     "board": "watchlist:greenhouse:anthropic",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.878Z",
-    "lastLatencyMs": 71,
-    "lastJobCount": 637,
-    "avgJobs": 647
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 138,
+    "lastJobCount": 633,
+    "avgJobs": 643
   },
   "watchlist:ashby:perplexity": {
     "board": "watchlist:ashby:perplexity",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.878Z",
-    "lastLatencyMs": 63,
-    "lastJobCount": 148,
-    "avgJobs": 147
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 246,
+    "lastJobCount": 151,
+    "avgJobs": 148
   },
   "watchlist:ashby:cursor": {
     "board": "watchlist:ashby:cursor",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.878Z",
-    "lastLatencyMs": 41,
-    "lastJobCount": 88,
-    "avgJobs": 93
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 156,
+    "lastJobCount": 89,
+    "avgJobs": 92
   },
   "watchlist:ashby:replit": {
     "board": "watchlist:ashby:replit",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.878Z",
-    "lastLatencyMs": 28,
-    "lastJobCount": 37,
-    "avgJobs": 35
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 139,
+    "lastJobCount": 38,
+    "avgJobs": 36
   },
   "watchlist:greenhouse:databricks": {
     "board": "watchlist:greenhouse:databricks",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.878Z",
-    "lastLatencyMs": 68,
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 103,
     "lastJobCount": 897,
-    "avgJobs": 900
+    "avgJobs": 899
   },
   "watchlist:greenhouse:figma": {
     "board": "watchlist:greenhouse:figma",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.878Z",
-    "lastLatencyMs": 55,
-    "lastJobCount": 146,
-    "avgJobs": 143
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 36,
+    "lastJobCount": 147,
+    "avgJobs": 144
   },
   "watchlist:greenhouse:gitlab": {
     "board": "watchlist:greenhouse:gitlab",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.878Z",
-    "lastLatencyMs": 55,
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 26,
     "lastJobCount": 246,
-    "avgJobs": 249
+    "avgJobs": 248
   },
   "watchlist:ashby:plane": {
     "board": "watchlist:ashby:plane",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.878Z",
-    "lastLatencyMs": 32,
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 69,
     "lastJobCount": 35,
     "avgJobs": 34
   },
   "watchlist:ashby:openai": {
     "board": "watchlist:ashby:openai",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.878Z",
-    "lastLatencyMs": 331,
-    "lastJobCount": 854,
-    "avgJobs": 841
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 275,
+    "lastJobCount": 852,
+    "avgJobs": 844
   },
   "watchlist:greenhouse:cloudflare": {
     "board": "watchlist:greenhouse:cloudflare",
-    "success": 115,
+    "success": 116,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.878Z",
-    "lastLatencyMs": 64,
-    "lastJobCount": 496,
-    "avgJobs": 490
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 53,
+    "lastJobCount": 503,
+    "avgJobs": 494
   },
   "linkedin:React Developer@Pune, India": {
     "board": "linkedin:React Developer@Pune, India",
-    "success": 112,
+    "success": 113,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.878Z",
-    "lastLatencyMs": 479,
-    "lastJobCount": 10,
-    "avgJobs": 7
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 75,
+    "lastJobCount": 0,
+    "avgJobs": 5
   },
   "linkedin:TypeScript Developer@Pune, India": {
     "board": "linkedin:TypeScript Developer@Pune, India",
-    "success": 112,
+    "success": 113,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.878Z",
-    "lastLatencyMs": 509,
-    "lastJobCount": 10,
-    "avgJobs": 8
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 110,
+    "lastJobCount": 0,
+    "avgJobs": 6
   },
   "linkedin:Junior Developer@Pune, India": {
     "board": "linkedin:Junior Developer@Pune, India",
-    "success": 112,
+    "success": 113,
     "fail": 0,
     "consecutiveFails": 0,
-    "lastSuccess": "2026-11-20T12:02:01.878Z",
-    "lastLatencyMs": 709,
-    "lastJobCount": 10,
-    "avgJobs": 8
+    "lastSuccess": "2026-11-21T11:38:03.017Z",
+    "lastLatencyMs": 89,
+    "lastJobCount": 0,
+    "avgJobs": 6
   }
 }
